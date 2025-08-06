@@ -6,9 +6,9 @@ export class CreateProductDto {
     @ApiProperty({example: 'Coca-Cola'})
     @IsString()
     @IsNotEmpty()
-    name: string
+    nome: string
 
-    @ApiProperty({example: '9,99'})
+    @ApiProperty({example: 9.99})
     @IsNumber()
     @Type(() => Number)
     preco: number
