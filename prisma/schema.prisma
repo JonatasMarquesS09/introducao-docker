@@ -19,3 +19,16 @@ model Produtos{
   preco Float
   descricao String
 }
+
+model User{
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  role UserRole @default(USER)
+}
+
+enum UserRole{
+  ADMIN
+  USER
+}

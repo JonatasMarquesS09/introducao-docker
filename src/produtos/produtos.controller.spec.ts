@@ -33,7 +33,7 @@ describe("ProdutosController", () => {
         expect(mockProductService.create).toHaveBeenCalledWith(product)
     })
 
-    it("Deve montra todos os produtos", async () => {
+    it("Deve mostra todos os produtos", async () => {
         const product = {nome: "Nescau", preco: 9.90, descricao: "Achocolatado"}
 
         mockProductService.findAll.mockResolvedValue(product)
