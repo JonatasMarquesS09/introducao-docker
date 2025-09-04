@@ -1,6 +1,6 @@
 ## Introdução ao Docker
 
-Objetivo: Praticar a criação de projeto Back-End com o CRUD completo de Usuário e Produtos utilizando
+Objetivo: Praticar a criação de projeto Back-End com o CRUD completo de Usuário e Produtos com a separação entre usuário Admin e usuário comun, aonde apenas o adminstrador tem acesso copleto ao CRUD de produtos
 
 ### Tecnologias Utilizadas
 
