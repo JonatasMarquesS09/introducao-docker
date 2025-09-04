@@ -14,7 +14,7 @@ export class CreateUserDto {
 
     @ApiProperty({example: "senha123", description: "Senha do usuário"})
     @IsString()
-    @IsNotEmpty({message: "A senha é obrigatório"})
+    @IsNotEmpty({message: "A senha é obrigatória"})
     password: string
 
 }

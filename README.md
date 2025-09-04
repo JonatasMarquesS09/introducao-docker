@@ -1,98 +1,181 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## Introdução ao Docker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Objetivo: Praticar a criação de projeto Back-End com o CRUD completo de Usuário e Produtos utilizando
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Tecnologias Utilizadas
 
-## Description
+- NestJS
+- Prisma(ORM)
+- PostgresSql(Database)
+- Jest(Testes)
+- Docker
+- Swagger
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Instalação 
 
-## Project setup
+Clone o arquivo com:
 
 ```bash
-$ npm install
+git clone git@github.com:JonatasMarquesS09/introducao-docker.
 ```
 
-## Compile and run the project
+Logo após utilize esse comando para baixar todas as dependências: 
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
+Caso não de certo baixe as dependências manualmente:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install @nestjs/passport passport passport-jwt 
+npm install @nestjs/swagger swagger-ui-express
+npm install bcrypt
+npm install class-transformer class-validator
+npm install @nestjs/jwt 
+npm install prisma @prisma/client
+npm install @nestjs/common @nestjs/config
+npm install @nestjs/core
 ```
+Obs: Instale uma linha de cada vez
 
-## Deployment
+## Configuração
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 1 - Instalação do banco de dados 
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Primeiro abra seu arquivo .env e configure dessa forma:
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/nestdb"
+DATABASE_URL_CONTAINER="postgresql://postgres:postgres@postgres:5432/nestdb"
+
+API_PORT=3000
+API_PORT_FRONT=3001
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=nestdb
+POSTGRES_PORT=5432
+
+SECRET_KEY="De sua preferencia"
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Logo depois vai ao arquivo docker-compose.yml e coloque:
 
-## Resources
+- Para o container do Banco de dados
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+services:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+  postgres:
+    image: postgres
+    container_name: postgresDB
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+```
 
-## Support
+- Para o container da Api
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: nest_api
+    env_file: .env
+    ports:
+      - "${API_PORT_FRONT}:${API_PORT}"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: ${DATABASE_URL_CONTAINER}
+    command: sh -c "npx prisma migrate deploy && npm run start:prod"
+```
+Agora abra seu Dockerfile.api e coloque:
 
-## Stay in touch
+```bash
+FROM node:20-alpine
+WORKDIR /app
+COPY package.json /.
+COPY package-lock.json /.
+RUN npm install
+COPY . .
+RUN npx prisma generate
+RUN npm run build
+EXPOSE 3000
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Pronto seu Banco de dados está feito, agora use:
 
-## License
+```bash
+docker-compose up --build
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Para criar seus containes
+
+### 2 -  Rodando sua aplicação
+
+Após a configuração do banco de dados utilize:
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+Para gerar seu Prisma Client
+
+Agora use: 
+
+```bash
+npm run build
+```
+
+Para construir sua aplicação
+
+E pronto sua aplicação está funcionando
+
+## Ùltimo passo
+
+Agora é só ligar seu container no docker e sua api vai está em:
+
+```bash
+http://localhost:3001/api
+```
+
+## Informaçãoes 
+
+### Endpoints
+
+Usuários(User)
+
+- GET /user => Listar todos os usuários
+- GET /user/:id => Listar usários por id
+- PUT /user/:id => Atualizar um usários
+- DELETE /user/:id => Deletar um usuário
+- POST /auth/register => Registra um usuário
+- POST /auth/login => Loga um usuário
+
+Produtos(product)
+
+- POST /produtos => Criar um produto
+- GET /produtos => Listar todos os produtos
+- GET /produtos/:id => Listar um produto por id
+- PUT /produtos/:id => Atualizar um produtos
+- DELETE /produtos/:id => Deletar um produto
+
+## Agradecimnetos
+
+Obrigado por dá uma olhada no meu arquivo, qualquer contribuição serão bem vindas
+
+Se quiser entrar em contato aqui está meu linkedin:
+
+https://www.linkedin.com/in/jonatas-marques-sousa-591632382/
+
+Muito obrigado❤️
+
+Ass: Jonatas Marques

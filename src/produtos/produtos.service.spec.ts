@@ -40,8 +40,8 @@ describe("ProdutosService", () => {
 
     it("Deve listar todos os produtod", async () => {
         const product = [
-            { nome: "Nescau", preco: 9.90, lancamento: "Achocalatado" },
-            { nome: "Biscoito", preco: 5.50, lancamento: "Biscoito recheado" }
+            { nome: "Nescau", preco: 9.90, descricao: "Achocalatado" },
+            { nome: "Biscoito", preco: 5.50, decricao: "Biscoito recheado" }
         ]
 
         mockPrisma.produtos.findMany.mockResolvedValue(product)
